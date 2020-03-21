@@ -20,10 +20,10 @@ jobs:
         os: [ubuntu-latest, ubuntu-latest, ubuntu-latest]
         include: 
         - os: ubuntu-latest
-          r: "release"
+          config.r: "release"
           env: test  
         - os: ubuntu-latest
-          r: "release"
+          config.r: "release"
           env: test2  
       # matrix:
       #   config:
