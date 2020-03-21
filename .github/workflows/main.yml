@@ -18,12 +18,12 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, ubuntu-latest, ubuntu-latest]
-        include: 
-        - config.os: ubuntu-latest
-          config.r: "release"
+        config: 
+        - os: ubuntu-latest
+          r: "release"
           env: test  
-        - config.os: ubuntu-latest
-          config.r: "release"
+        - os: ubuntu-latest
+          r: "release"
           env: test2  
       # matrix:
       #   config:
