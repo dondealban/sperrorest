@@ -12,19 +12,17 @@ jobs:
   R-CMD-check:
     runs-on: ${{ matrix.config.os }}
 
-    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
+    name: ${{ matrix.config.os }} (${{ matrix.config.r }})  (${{ matrix.config.env }})
 
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, ubuntu-latest, ubuntu-latest]
+        os: [ubuntu-latest]
         config: 
-        - os: ubuntu-latest
-          r: "release"
-          env: test  
-        - os: ubuntu-latest
-          r: "release"
-          env: test2  
+        - r: "release"
+          env: "test"  
+        - r: "release"
+          env: "test2"  
       # matrix:
       #   config:
       #     # comment out lines if you do not want to build on certain platforms
@@ -115,7 +113,7 @@ jobs:
 
       # for some strange Windows reason this step and the next one need to be decoupled
       - name: "[Stage] Test"
-        if: ${{matrix.env}} == "test"
+        if: ${{matrix.config.env}} == "test"
         run: |
           Rscript -e "if (!requireNamespace('future.test')) install.packages('future.test')"
           Rscript -e "future.tests::check(plan = 'multisession')"
