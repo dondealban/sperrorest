@@ -17,10 +17,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        config:
-          # comment out lines if you do not want to build on certain platforms
-          - { os: macOS-latest, r: "release", env: "test"}
-          - { os: macOS-latest, r: "release", env: "test2"}
+        os: [ubuntu-latest, ubuntu-latest, ubuntu-latest]
+        include: 
+        - os: ubuntu-latest
+          r: "release"
+          env: test  
+        - os: ubuntu-latest
+          r: "release"
+          env: test2  
+      # matrix:
+      #   config:
+      #     # comment out lines if you do not want to build on certain platforms
+      #     - { os: macOS-latest, r: "release", env: "test"}
+      #     - { os: macOS-latest, r: "release", env: "test2"}
 
     env:
       # otherwise remotes::fun() errors cause the build to fail. Example: Unavailability of binaries
@@ -106,7 +115,7 @@ jobs:
 
       # for some strange Windows reason this step and the next one need to be decoupled
       - name: "[Stage] Test"
-        if: runner.env == 'test'
+        if: ${{matrix.env}} == "test"
         run: |
           Rscript -e "if (!requireNamespace('future.test')) install.packages('future.test')"
           Rscript -e "future.tests::check(plan = 'multisession')"
