@@ -12,7 +12,7 @@ jobs:
   R-CMD-check:
     runs-on: ${{ matrix.config.os }}
 
-    name: Plan '${{ matrix.config.futurePlan }}'
+    name: Backend '${{ matrix.config.backend }}'
 
     strategy:
       fail-fast: false
@@ -20,21 +20,22 @@ jobs:
         config: 
         - os: ubuntu-latest
           r: "release"
-          futurePlan: "multisession"  
+          backend: "cluster"  
         - os: ubuntu-latest
           r: "release"
-          futurePlan: "multiprocess"
+          backend: "multicore"
         - os: ubuntu-latest
           r: "release"
-          futurePlan: "callr"
+          backend: "multiprocess"  
         - os: ubuntu-latest
           r: "release"
-          futurePlan: "cluster"
-      # matrix:
-      #   config:
-      #     # comment out lines if you do not want to build on certain platforms
-      #     - { os: macOS-latest, r: "release", env: "test"}
-      #     - { os: macOS-latest, r: "release", env: "test2"}
+          backend: "multisession"
+        - os: ubuntu-latest
+          r: "release"
+          backend: "future.batchtools::batchtools_local"
+        - os: ubuntu-latest
+          r: "release"
+          backend: "future.BatchJobs::batchjobs_local"
 
     env:
       # otherwise remotes::fun() errors cause the build to fail. Example: Unavailability of binaries
@@ -46,10 +47,6 @@ jobs:
       CCACHE_DIR: ${{ GITHUB.WORKSPACE }}/.ccache
       CCACHE_NOHASHDIR: true
       CCACHE_SLOPPINESS: include_file_ctime
-      # make sure to run `tic::use_ghactions_deploy()` to set up deployment
-      TIC_DEPLOY_KEY: ${{ secrets.TIC_DEPLOY_KEY }}
-      # prevent rgl issues because no X11 display is available
-      RGL_USE_NULL: true
 
     steps:
       - uses: actions/checkout@v2
@@ -86,4 +83,6 @@ jobs:
         run: |
           Rscript -e "if (!requireNamespace('future.tests')) install.packages('future.tests')"
           Rscript -e "if (!requireNamespace('future.callr')) install.packages('future.callr')"
-          Rscript -e "future.tests::check(plan = '${{matrix.config.futurePlan}}')"
+          Rscript -e "if (!requireNamespace('future.batchtools')) install.packages('future.batchtools')"
+          Rscript -e "if (!requireNamespace('future.BatchJobs')) install.packages('future.BatchJobs')"
+          Rscript -e "future.tests::check(plan = '${{matrix.config.backend}}')"
