@@ -17,11 +17,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest]
         config: 
-        - r: "release"
+        - os: ubuntu-latest
+          r: "release"
           env: "test"  
-        - r: "release"
+        - os: ubuntu-latest
+          r: "release"
           env: "test2"  
       # matrix:
       #   config:
