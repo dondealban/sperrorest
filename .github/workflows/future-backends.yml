@@ -12,7 +12,7 @@ jobs:
   R-CMD-check:
     runs-on: ${{ matrix.config.os }}
 
-    name: Backend '${{ matrix.config.backend }}'
+    name: '${{ matrix.config.backend }}'
 
     strategy:
       fail-fast: false
