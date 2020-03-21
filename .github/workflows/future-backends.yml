@@ -94,4 +94,3 @@ jobs:
       - name: "[Stage] Check future plans"
         run: |
           Rscript -e "future.tests::check(plan = '${{matrix.config.backend}}')"
-          exit_code <- attr(results, "exit_code")
