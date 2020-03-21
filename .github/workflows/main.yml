@@ -20,10 +20,10 @@ jobs:
         config: 
         - os: ubuntu-latest
           r: "release"
-          env: "test"  
+          env: "multisession"  
         - os: ubuntu-latest
           r: "release"
-          env: "test2"  
+          env: "multiprocess"  
       # matrix:
       #   config:
       #     # comment out lines if you do not want to build on certain platforms
@@ -116,5 +116,5 @@ jobs:
       - name: "[Stage] Test"
         if: ${{matrix.config.env}} == "test"
         run: |
-          Rscript -e "if (!requireNamespace('future.test')) install.packages('future.test')"
-          Rscript -e "future.tests::check(plan = 'multisession')"
+          Rscript -e "if (!requireNamespace('future.tests')) install.packages('future.tests')"
+          Rscript -e "future.tests::check(plan = ${{matrix.config.env}})"
