@@ -114,7 +114,6 @@ jobs:
 
       # for some strange Windows reason this step and the next one need to be decoupled
       - name: "[Stage] Test"
-        if: ${{matrix.config.env}} == "test"
         run: |
           Rscript -e "if (!requireNamespace('future.tests')) install.packages('future.tests')"
-          Rscript -e "future.tests::check(plan = ${{matrix.config.env}})"
+          Rscript -e "future.tests::check(plan = '${{matrix.config.env}')"
