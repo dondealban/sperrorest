@@ -116,4 +116,4 @@ jobs:
       - name: "[Stage] Test"
         run: |
           Rscript -e "if (!requireNamespace('future.tests')) install.packages('future.tests')"
-          Rscript -e "future.tests::check(plan = '${{matrix.config.env}')"
+          Rscript -e "future.tests::check(plan = '${{matrix.config.env}}')"
