@@ -12,7 +12,7 @@ jobs:
   R-CMD-check:
     runs-on: ${{ matrix.config.os }}
 
-    name: (${{ matrix.config.future.plan }})
+    name: ${{ matrix.config.futurePlan }}
 
     strategy:
       fail-fast: false
@@ -20,13 +20,13 @@ jobs:
         config: 
         - os: ubuntu-latest
           r: "release"
-          future.plan: "multisession"  
+          futurePlan: "multisession"  
         - os: ubuntu-latest
           r: "release"
-          future.plan: "multiprocess"
+          futurePlan: "multiprocess"
         - os: ubuntu-latest
           r: "release"
-          future.plan: "multiprocess"
+          futurePlan: "multiprocess"
       # matrix:
       #   config:
       #     # comment out lines if you do not want to build on certain platforms
@@ -64,7 +64,6 @@ jobs:
         id: date
         run: echo "::set-output name=date::$(date '+%d-%m')"
 
-
       - name: "[Cache] Cache R packages"
         if: runner.os != 'Windows'
         uses: pat-s/always-upload-cache@v1.1.4
@@ -84,4 +83,4 @@ jobs:
         run: |
           Rscript -e "if (!requireNamespace('future.tests')) install.packages('future.tests')"
           Rscript -e "if (!requireNamespace('future.callr')) install.packages('future.callr')"
-          Rscript -e "future.tests::check(plan = '${{matrix.config.future.plan}}')"
+          Rscript -e "future.tests::check(plan = '${{matrix.config.futurePlan}}')"
